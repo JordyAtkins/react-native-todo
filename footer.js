@@ -5,17 +5,20 @@ import {FilterOptions} from './filterOptions';
 
 class Footer extends Component {
     render() {
-        const { filter } = this.props;
+        const {filter} = this.props;
         return (
             <View style={styles.container}>
                 <View style={styles.filters}>
-                    <TouchableOpacity style={[styles.filter, filter === FilterOptions.All && styles.selected]} onPress={() => this.props.onFilter(FilterOptions.All)}>
+                    <TouchableOpacity style={[styles.filter, filter === FilterOptions.All && styles.selected]}
+                                      onPress={() => this.props.onFilter(FilterOptions.All)}>
                         <Text>All</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.filter, filter === FilterOptions.Active && styles.selected]} onPress={() => this.props.onFilter(FilterOptions.Active)}>
+                    <TouchableOpacity style={[styles.filter, filter === FilterOptions.Active && styles.selected]}
+                                      onPress={() => this.props.onFilter(FilterOptions.Active)}>
                         <Text>Active</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.filter, filter === FilterOptions.Done && styles.selected]} onPress={() => this.props.onFilter(FilterOptions.Done)}>
+                    <TouchableOpacity style={[styles.filter, filter === FilterOptions.Done && styles.selected]}
+                                      onPress={() => this.props.onFilter(FilterOptions.Done)}>
                         <Text>Complete</Text>
                     </TouchableOpacity>
                 </View>

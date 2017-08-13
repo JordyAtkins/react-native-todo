@@ -8,7 +8,7 @@ import {FilterOptions} from './filterOptions';
 
 const filterItems = (filter, items) => {
     return items.filter((i) => {
-        if(filter === FilterOptions.All){
+        if (filter === FilterOptions.All) {
             return true
         } else if (filter === FilterOptions.Active) {
             return i.complete
@@ -67,10 +67,10 @@ class App extends Component {
         this.setSource(this.state.items, filterItems(filter, this.state.items), {filter});
     }
 
-    setSource(items, itemdDataSource, otherState = {}) {
+    setSource(items, itemDataSource, otherState = {}) {
         this.setState({
             items,
-            dataSource: this.state.dataSource.cloneWithRows(itemdDataSource),
+            dataSource: this.state.dataSource.cloneWithRows(itemDataSource),
             ...otherState
         });
     }
@@ -129,7 +129,7 @@ class App extends Component {
                 </View>
                 <Footer
                     onFilter={this.handleFilter}
-                filter={this.state.filter}/>
+                    filter={this.state.filter}/>
             </View>
         )
     }

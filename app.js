@@ -11,9 +11,9 @@ const filterItems = (filter, items) => {
         if (filter === FilterOptions.All) {
             return true
         } else if (filter === FilterOptions.Active) {
-            return i.complete
-        } else if (filter === FilterOptions.Done) {
             return !i.complete
+        } else if (filter === FilterOptions.Done) {
+            return i.complete
         }
     })
 }

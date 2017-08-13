@@ -4,6 +4,19 @@ import {View, StyleSheet, Platform, ListView, Keyboard} from "react-native";
 import Header from './header';
 import Footer from './footer';
 import Row from './row';
+import {FilterOptions} from './filterOptions';
+
+const filterItems = (filter, items) => {
+    return items.filter((i) => {
+        if(filter === FilterOptions.All){
+            return true
+        } else if (filter === FilterOptions.Active) {
+            return i.complete
+        } else if (filter === FilterOptions.Done) {
+            return !i.complete
+        }
+    })
+}
 
 class App extends Component {
 
@@ -14,12 +27,14 @@ class App extends Component {
         this.state = {
             value: "",
             items: [],
+            filter: FilterOptions.All,
             allComplete: false,
             dataSource: ds.cloneWithRows([])
         };
         this.setSource = this.setSource.bind(this);
         this.handleRemove = this.handleRemove.bind(this);
         this.handleAdd = this.handleAdd.bind(this);
+        this.handleFilter = this.handleFilter.bind(this);
         this.handleToggleComplete = this.handleToggleComplete.bind(this);
         this.handleToggleAllComplete = this.handleToggleAllComplete.bind(this);
     }
@@ -31,7 +46,7 @@ class App extends Component {
             return k.key !== key;
         });
 
-        this.setSource(newItems, newItems)
+        this.setSource(newItems, filterItems(this.state.filter, newItems))
     }
 
     handleAdd() {
@@ -45,7 +60,11 @@ class App extends Component {
                 complete: false
             }
         ];
-        this.setSource(newItems, newItems, {value: ""});
+        this.setSource(newItems, filterItems(this.state.filter, newItems), {value: ""});
+    }
+
+    handleFilter(filter) {
+        this.setSource(this.state.items, filterItems(filter, this.state.items), {filter});
     }
 
     setSource(items, itemdDataSource, otherState = {}) {
@@ -69,7 +88,7 @@ class App extends Component {
             };
         });
 
-        this.setSource(newItems, newItems);
+        this.setSource(newItems, filterItems(this.state.filter, newItems));
     }
 
     handleToggleAllComplete() {
@@ -78,7 +97,7 @@ class App extends Component {
             ...i,
             complete
         }));
-        this.setSource(newItems, newItems, {allComplete: complete});
+        this.setSource(newItems, filterItems(this.state.filter, newItems), {allComplete: complete});
     }
 
     render() {
@@ -108,7 +127,9 @@ class App extends Component {
                             return <View key={rowId} style={styles.separator}/>
                         }}/>
                 </View>
-                <Footer/>
+                <Footer
+                    onFilter={this.handleFilter}
+                filter={this.state.filter}/>
             </View>
         )
     }

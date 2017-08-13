@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {AsyncStorage, Keyboard, ListView, Platform, StyleSheet, View} from "react-native";
+import {ActivityIndicator, AsyncStorage, Keyboard, ListView, Platform, StyleSheet, View} from "react-native";
 
 import Header from './header';
 import Footer from './footer';
@@ -27,11 +27,12 @@ class App extends Component {
 
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            value: "",
-            items: [],
-            filter: FilterOptions.All,
             allComplete: false,
-            dataSource: ds.cloneWithRows([])
+            dataSource: ds.cloneWithRows([]),
+            filter: FilterOptions.All,
+            items: [],
+            loading: true,
+            value: "",
         };
 
         this.handleAdd = this.handleAdd.bind(this);
@@ -53,6 +54,8 @@ class App extends Component {
                     } catch (e) {
                         // Error reporting...
                     }
+
+                    this.setState({loading: false});
                 }
             )
     }
@@ -157,6 +160,14 @@ class App extends Component {
                     onClearComplete={this.handleClearComplete}
                     onFilter={this.handleFilter}
                     filter={this.state.filter}/>
+                {this.state.loading &&
+                    <View style={styles.loading}>
+                        <ActivityIndicator
+                            animating
+                            size="large"
+                        />
+                    </View>
+                }
             </View>
         )
     }
@@ -178,6 +189,16 @@ const styles = StyleSheet.create({
     },
     list: {
         backgroundColor: '#FFF'
+    },
+    loading: {
+        position: "absolute",
+        left: 0,
+        top: 0,
+        right: 0,
+        bottom: 0,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "rgba(0,0,0, .2)"
     },
     separator: {
         borderWidth: 1,

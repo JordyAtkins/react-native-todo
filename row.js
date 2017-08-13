@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, Switch, TouchableOpacity} from "react-native";
+import {Switch, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 
 class Row extends Component {
 

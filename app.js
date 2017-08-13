@@ -1,10 +1,12 @@
 import React, {Component} from "react";
-import {View, StyleSheet, Platform, ListView, Keyboard} from "react-native";
+import {AsyncStorage, Keyboard, ListView, Platform, StyleSheet, View} from "react-native";
 
 import Header from './header';
 import Footer from './footer';
 import Row from './row';
 import {FilterOptions} from './filterOptions';
+
+const ItemKey = "items";
 
 const filterItems = (filter, items) => {
     return items.filter((i) => {
@@ -39,6 +41,20 @@ class App extends Component {
         this.handleToggleAllComplete = this.handleToggleAllComplete.bind(this);
         this.handleToggleComplete = this.handleToggleComplete.bind(this);
         this.setSource = this.setSource.bind(this);
+    }
+
+    componentWillMount() {
+
+        AsyncStorage.getItem(ItemKey)
+            .then((json) => {
+                    try {
+                        const items = JSON.parse(json);
+                        this.setSource(items, items);
+                    } catch (e) {
+                        // Error reporting...
+                    }
+                }
+            )
     }
 
     handleAdd() {
@@ -105,6 +121,7 @@ class App extends Component {
             dataSource: this.state.dataSource.cloneWithRows(itemDataSource),
             ...otherState
         });
+        AsyncStorage.setItem(ItemKey, JSON.stringify(items));
     }
 
     render() {

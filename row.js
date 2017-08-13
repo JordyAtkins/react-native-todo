@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, Switch} from "react-native";
+import {View, Text, StyleSheet, Switch, TouchableOpacity} from "react-native";
 
 class Row extends Component {
 
@@ -12,6 +12,9 @@ class Row extends Component {
                 <View style={styles.textWrap}>
                     <Text style={[styles.text, complete && styles.complete]}>{this.props.text}</Text>
                 </View>
+                <TouchableOpacity onPress={this.props.removeItem}>
+                    <Text style={styles.toggleIcon}>{String.fromCharCode(10003)}</Text>
+                </TouchableOpacity>
             </View>
         )
     }

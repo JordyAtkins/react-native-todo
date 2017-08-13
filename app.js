@@ -18,9 +18,20 @@ class App extends Component {
             dataSource: ds.cloneWithRows([])
         };
         this.setSource = this.setSource.bind(this);
+        this.handleRemove = this.handleRemove.bind(this);
         this.handleAdd = this.handleAdd.bind(this);
         this.handleToggleComplete = this.handleToggleComplete.bind(this);
         this.handleToggleAllComplete = this.handleToggleAllComplete.bind(this);
+    }
+
+    handleRemove(key) {
+        const newItems = this.state.items.filter((k) => {
+            console.log(key);
+            console.log(k);
+            return k.key !== key;
+        });
+
+        this.setSource(newItems, newItems)
     }
 
     handleAdd() {
@@ -89,6 +100,7 @@ class App extends Component {
                             return (
                                 <Row key={key}
                                      onComplete={(complete) => this.handleToggleComplete(key, complete)}
+                                     removeItem={() => this.handleRemove(key)}
                                      {...value} />
                             )
                         }}

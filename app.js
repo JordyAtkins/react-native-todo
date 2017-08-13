@@ -128,6 +128,7 @@ class App extends Component {
                         }}/>
                 </View>
                 <Footer
+                    count={filterItems(FilterOptions.Active, this.state.items).length}
                     onFilter={this.handleFilter}
                     filter={this.state.filter}/>
             </View>
@@ -138,7 +139,7 @@ class App extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#888",
+        backgroundColor: "#DDD",
         ... Platform.select({
             ios: {
                 paddingTop: 30

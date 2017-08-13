@@ -8,6 +8,7 @@ class Footer extends Component {
         const {filter} = this.props;
         return (
             <View style={styles.container}>
+                <Text>{this.props.count} count</Text>
                 <View style={styles.filters}>
                     <TouchableOpacity style={[styles.filter, filter === FilterOptions.All && styles.selected]}
                                       onPress={() => this.props.onFilter(FilterOptions.All)}>
@@ -36,10 +37,7 @@ const styles = StyleSheet.create({
         justifyContent: "space-between"
     },
     filters: {
-        flex: 1,
-        flexDirection: "row",
-        justifyContent: "space-between"
-
+        flexDirection: "row"
     },
     filter: {
         padding: 8,

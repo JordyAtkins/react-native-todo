@@ -16,7 +16,7 @@ const filterItems = (filter, items) => {
             return i.complete
         }
     })
-}
+};
 
 class App extends Component {
 
@@ -31,22 +31,14 @@ class App extends Component {
             allComplete: false,
             dataSource: ds.cloneWithRows([])
         };
-        this.setSource = this.setSource.bind(this);
-        this.handleRemove = this.handleRemove.bind(this);
+
         this.handleAdd = this.handleAdd.bind(this);
+        this.handleClearComplete = this.handleClearComplete.bind(this);
+        this.handleRemove = this.handleRemove.bind(this);
         this.handleFilter = this.handleFilter.bind(this);
-        this.handleToggleComplete = this.handleToggleComplete.bind(this);
         this.handleToggleAllComplete = this.handleToggleAllComplete.bind(this);
-    }
-
-    handleRemove(key) {
-        const newItems = this.state.items.filter((k) => {
-            console.log(key);
-            console.log(k);
-            return k.key !== key;
-        });
-
-        this.setSource(newItems, filterItems(this.state.filter, newItems))
+        this.handleToggleComplete = this.handleToggleComplete.bind(this);
+        this.setSource = this.setSource.bind(this);
     }
 
     handleAdd() {
@@ -63,16 +55,32 @@ class App extends Component {
         this.setSource(newItems, filterItems(this.state.filter, newItems), {value: ""});
     }
 
+    handleClearComplete() {
+        const newItems = filterItems(FilterOptions.Active, this.state.items);
+        this.setSource(newItems, filterItems(this.state.filter, newItems));
+    }
+
     handleFilter(filter) {
         this.setSource(this.state.items, filterItems(filter, this.state.items), {filter});
     }
 
-    setSource(items, itemDataSource, otherState = {}) {
-        this.setState({
-            items,
-            dataSource: this.state.dataSource.cloneWithRows(itemDataSource),
-            ...otherState
+    handleRemove(key) {
+        const newItems = this.state.items.filter((k) => {
+            console.log(key);
+            console.log(k);
+            return k.key !== key;
         });
+
+        this.setSource(newItems, filterItems(this.state.filter, newItems))
+    }
+
+    handleToggleAllComplete() {
+        const complete = !this.state.allComplete;
+        const newItems = this.state.items.map((i) => ({
+            ...i,
+            complete
+        }));
+        this.setSource(newItems, filterItems(this.state.filter, newItems), {allComplete: complete});
     }
 
     handleToggleComplete(key, complete) {
@@ -91,27 +99,25 @@ class App extends Component {
         this.setSource(newItems, filterItems(this.state.filter, newItems));
     }
 
-    handleToggleAllComplete() {
-        const complete = !this.state.allComplete;
-        const newItems = this.state.items.map((i) => ({
-            ...i,
-            complete
-        }));
-        this.setSource(newItems, filterItems(this.state.filter, newItems), {allComplete: complete});
+    setSource(items, itemDataSource, otherState = {}) {
+        this.setState({
+            items,
+            dataSource: this.state.dataSource.cloneWithRows(itemDataSource),
+            ...otherState
+        });
     }
 
     render() {
         return (
             <View style={styles.container}>
                 <Header
-                    value={this.state.value}
                     onAddItem={this.handleAdd}
                     onChange={(value) => this.setState({value})}
                     onToggleAllComplete={this.handleToggleAllComplete}
+                    value={this.state.value}
                 />
                 <View style={styles.content}>
                     <ListView
-                        style={styles.list}
                         enableEmptySections
                         dataSource={this.state.dataSource}
                         onScroll={() => Keyboard.dismiss()}
@@ -125,10 +131,13 @@ class App extends Component {
                         }}
                         renderSeparator={(sectionId, rowId) => {
                             return <View key={rowId} style={styles.separator}/>
-                        }}/>
+                        }}
+                        style={styles.list}
+                    />
                 </View>
                 <Footer
                     count={filterItems(FilterOptions.Active, this.state.items).length}
+                    onClearComplete={this.handleClearComplete}
                     onFilter={this.handleFilter}
                     filter={this.state.filter}/>
             </View>

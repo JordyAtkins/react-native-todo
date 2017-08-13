@@ -12,8 +12,8 @@ class Row extends Component {
                 <View style={styles.textWrap}>
                     <Text style={[styles.text, complete && styles.complete]}>{this.props.text}</Text>
                 </View>
-                <TouchableOpacity onPress={this.props.removeItem}>
-                    <Text style={styles.toggleIcon}>{String.fromCharCode(10003)}</Text>
+                <TouchableOpacity onPress={this.props.onRemove}>
+                    <Text style={styles.destroy}>X</Text>
                 </TouchableOpacity>
             </View>
         )
@@ -38,6 +38,11 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 24,
         color: '#4D4D4D'
+    },
+    destroy: {
+        fontSize: 24,
+        color: "#cc9a9a",
+
     }
 });
 

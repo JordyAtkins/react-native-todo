@@ -100,7 +100,7 @@ class App extends Component {
                             return (
                                 <Row key={key}
                                      onComplete={(complete) => this.handleToggleComplete(key, complete)}
-                                     removeItem={() => this.handleRemove(key)}
+                                     onRemove={() => this.handleRemove(key)}
                                      {...value} />
                             )
                         }}
